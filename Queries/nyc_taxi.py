@@ -98,5 +98,64 @@ group by
 	1
 order by
 	2 desc
-    
+
+         '''
+
+
+
+query4 = '''
+        -- Returns rate code with the highest fare amount in dollars
+with
+    amount_by_rate_code as (
+                            select 
+                                  distinct
+                                          (
+                                           case
+									           when yt."RatecodeID" = 1 then 'Standard rate'
+                                               when yt."RatecodeID" = 2 then 'JFK'
+                                               when yt."RatecodeID" = 3 then 'Newark'
+                                               when yt."RatecodeID" = 4 then 'Nassau or Westchester'
+                                               when yt."RatecodeID" = 5 then 'Negotiated fare'
+                                               when yt."RatecodeID" = 6 then 'Group ride'
+                                             else 'Unknown' 
+                                           end
+                                          ) as ratecode_name,
+                                          round(avg(yt.fare_amount) over w) as avg_fare_amount,
+                                          cast(sum(yt.fare_amount) over w as int) as total_fare_amount
+                            from yellow_taxi yt
+                            where yt.fare_amount > 0
+                            window w as (partition by yt."RatecodeID")
+                           )
+                                    
+select * from amount_by_rate_code order by 3 desc
+
+         '''
+
+
+
+query5 = '''
+         -- Returns rate code with the highest passenger count
+with
+    passenger_count_per_rate_code as (
+                                      select 
+                                            distinct
+                                                    (
+                                                     case
+									                     when yt."RatecodeID" = 1 then 'Standard rate'
+                                                         when yt."RatecodeID" = 2 then 'JFK'
+                                                         when yt."RatecodeID" = 3 then 'Newark'
+                                                         when yt."RatecodeID" = 4 then 'Nassau or Westchester'
+                                                         when yt."RatecodeID" = 5 then 'Negotiated fare'
+                                                         when yt."RatecodeID" = 6 then 'Group ride'
+                                                       else 'Unknown' 
+                                                      end
+                                                     ) as ratecode_name,
+                                                     sum(yt.passenger_count) over w as passenger_count
+                                      from yellow_taxi yt
+                                      where yt.fare_amount > 0
+                                      window w as (partition by yt."RatecodeID")
+                                     )
+                                    
+select * from passenger_count_per_rate_code where passenger_count notnull order by 2 desc
+
          '''
