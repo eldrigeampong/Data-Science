@@ -23,6 +23,7 @@ def read_data()->pd.DataFrame:
 
 
 
+
 def load():
     '''
     Write Transformed Records Stored In A DataFrame to PostgreSQL database
