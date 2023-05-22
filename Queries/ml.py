@@ -30,7 +30,6 @@ with
                               distinct 
                                       bs.trip_id,
                                       bs.start_time::timestamp,
-                                      bs.end_time::timestamp,
                                       bs.duration,
                                       bs.start_lat,
                                       bs.start_lon,
