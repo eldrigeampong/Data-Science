@@ -160,4 +160,26 @@ select * from passenger_count_per_rate_code where passenger_count notnull order 
 
 
 
+-- Returns Count Of Passengers Overtime
+
+with
+    passenger_count_tbl as (
+                            select 
+                                  distinct 
+                                          yt.tpep_pickup_datetime,
+                                          yt.passenger_count
+                            from yellow_taxi yt
+                            )
+select
+	  distinct 
+	          *
+from
+	passenger_count_tbl
+order by
+	tpep_pickup_datetime desc
+
+	
+	
+
+
 

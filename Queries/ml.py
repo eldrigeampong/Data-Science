@@ -1,13 +1,13 @@
 query1 = '''
-         -- Returns Count Of Passengers Picked Up Over Time
+         -- Returns Count Of Passengers Overtime
 
 with
     passenger_count_tbl as (
                             select 
                                   distinct 
                                           yt.tpep_pickup_datetime,
-                                          yt.passenger_count 
-                            from yellow_taxi yt 
+                                          yt.passenger_count
+                            from yellow_taxi yt
                             )
 select
 	  distinct 
@@ -15,7 +15,7 @@ select
 from
 	passenger_count_tbl
 order by
-	1 asc
+	tpep_pickup_datetime desc
     
          '''
 
